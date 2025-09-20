@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData(form);
 
     try {
-      const response = await fetch('send_mail.php', {
+      const response = await fetch('form.php', {
         method: 'POST',
         body: formData
       });
