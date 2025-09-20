@@ -1,8 +1,9 @@
 <?php
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = htmlspecialchars(trim($_POST['name']));
-    $email = htmlspecialchars(trim($_POST['email']));
-    $message = htmlspecialchars(trim($_POST['message']));
+    $name = htmlspecialchars(trim($_POST['name'] ?? ''));
+    $email = htmlspecialchars(trim($_POST['email'] ?? ''));
+    $message = htmlspecialchars(trim($_POST['message'] ?? ''));
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         http_response_code(400);
@@ -16,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $headers = "From: $email\r\nReply-To: $email\r\n";
 
     if (mail($to, $subject, $body, $headers)) {
-        echo "Ваше сообщение отправлено.";
+        echo "Спасибо! Ваше сообщение отправлено.";
     } else {
         http_response_code(500);
         echo "Ошибка при отправке письма. Попробуйте позже.";
