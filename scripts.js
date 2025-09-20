@@ -32,3 +32,47 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('contact-form');
+  const messageDiv = document.getElementById('form-message');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    messageDiv.innerHTML = '';
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch('send_mail.php', {
+        method: 'POST',
+        body: formData
+      });
+
+      const text = await response.text();
+
+      if (response.ok) {
+        if (text.includes('Спасибо')) {
+          messageDiv.style.color = 'green';
+          messageDiv.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Success" width="40" height="40" />
+              <span>Ваше сообщение отправлено. Ожидайте звонка 🦁📞📞</span>
+            </div>
+          `;
+          form.reset();
+        } else {
+          messageDiv.style.color = 'red';
+          messageDiv.textContent = text;
+        }
+      } else {
+        messageDiv.style.color = 'red';
+        messageDiv.textContent = 'Ошибка сервера. Попробуйте позже.';
+      }
+    } catch (error) {
+      messageDiv.style.color = 'red';
+      messageDiv.textContent = 'Ошибка сети. Проверьте подключение.';
+      console.error('Ошибка отправки формы:', error);
+    }
+  });
+});

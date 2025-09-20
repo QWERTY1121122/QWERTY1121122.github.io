@@ -268,15 +268,17 @@
           </div>
           <div>
             <h3>Email</h3>
-            <p><a href="mailto:ufapravorf@yandex.ru">ufapravorf@yandex.ru</a></p>
+            <p><a href="mailto:sinigatullinilgam@gmail.com">sinigatullinilgam@gmail.com</a></p>
           </div>
         </div>
-        <form class="contact-form">
-          <input type="text" placeholder="Ваше имя" required>
-          <input type="email" placeholder="Email" required>
-          <textarea placeholder="Ваше сообщение" rows="5" required></textarea>
+        <form id="contact-form" class="contact-form">
+          <input type="text" name="name" placeholder="Ваше имя" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <textarea name="message" placeholder="Ваше сообщение" rows="5" required></textarea>
           <button type="submit" class="btn-accent">Отправить</button>
         </form>
+
+        <div id="form-message" style="margin-top: 10px;"></div>
       </div>
     </section>
     <a href="#main" id="unique">Вернуться в начало</a>
