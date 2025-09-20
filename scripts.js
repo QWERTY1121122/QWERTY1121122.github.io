@@ -40,34 +40,37 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     messageDiv.innerHTML = '';
+    messageDiv.style.color = '';
 
     const formData = new FormData(form);
 
     try {
-      const response = await fetch('form.php', {
+      const response = await fetch('https://formspree.io/f/xandrlnl', {
         method: 'POST',
+        headers: {
+          'Accept': 'application/json'
+        },
         body: formData
       });
 
-      const text = await response.text();
+      const data = await response.json();
 
       if (response.ok) {
-        if (text.includes('Спасибо')) {
-          messageDiv.style.color = 'green';
-          messageDiv.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Success" width="40" height="40" />
-              <span>Ваше сообщение отправлено. Ожидайте звонка 🦁📞📞</span>
-            </div>
-          `;
-          form.reset();
-        } else {
-          messageDiv.style.color = 'red';
-          messageDiv.textContent = text;
-        }
+        messageDiv.style.color = 'green';
+        messageDiv.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Success" width="40" height="40" />
+            <span>Ваше сообщение отправлено. Ожидайте звонка 🦁📞📞</span>
+          </div>
+        `;
+        form.reset();
       } else {
         messageDiv.style.color = 'red';
-        messageDiv.textContent = 'Ошибка сервера. Попробуйте позже.';
+        if (data && data.errors) {
+          messageDiv.textContent = data.errors.map(err => err.message).join(', ');
+        } else {
+          messageDiv.textContent = 'Произошла ошибка при отправке.';
+        }
       }
     } catch (error) {
       messageDiv.style.color = 'red';
